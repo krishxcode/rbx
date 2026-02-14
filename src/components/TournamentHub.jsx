@@ -9,7 +9,7 @@ import {
   Award,
   Target,
 } from "lucide-react";
-import { motion} from 'framer-motion';
+import { motion } from "framer-motion";
 const filters = ["ALL", "LIVE", "UPCOMING", "COMPLETED"];
 
 const allTournaments = [
@@ -57,7 +57,6 @@ const allTournaments = [
     points: "ELIMINATED",
     prize: "₹10,000,000",
   },
- 
 ];
 
 const TournamentHub = () => {
@@ -100,9 +99,9 @@ const TournamentHub = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Header */}
-        <div className="flex flex-col md:flex-row items-end justify-between mb-16">
-          <div className="md:w-1/2">
-            <div className="flex items-center gap-2 mb-2">
+        <div className="flex flex-col md:flex-row items-center md:items-end justify-between mb-16">
+          <div className="md:w-1/2 text-center md:text-left">
+            <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
               <Target className="text-brand-red animate-pulse" size={24} />
               <span className="text-brand-red font-bold tracking-[0.3em] uppercase text-sm">
                 Competitive Calendar
