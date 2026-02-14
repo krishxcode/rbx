@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Text Selection Color */
+::selection {
+  background: #ff0033;
+  color: white;
+}
+
+/* Firefox support */
+::-moz-selection {
+  background: #ff0033;
+  color: white;
+}
