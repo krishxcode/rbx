@@ -20,8 +20,8 @@ export const JoinSection = () => {
                         <input type="text" className="w-full bg-black/50 border border-white/10 p-4 text-white focus:border-brand-red focus:outline-none transition-colors" placeholder="e.g. ShadowSlayer" />
                     </div>
                     <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Discord ID</label>
-                        <input type="text" className="w-full bg-black/50 border border-white/10 p-4 text-white focus:border-brand-red focus:outline-none transition-colors" placeholder="username#0000" />
+                        <label className="text-xs font-bold uppercase tracking-widest text-gray-500">GAME UID</label>
+                        <input type="text" className="w-full bg-black/50 border border-white/10 p-4 text-white focus:border-brand-red focus:outline-none transition-colors" placeholder="UID#0000" />
                     </div>
                 </div>
 

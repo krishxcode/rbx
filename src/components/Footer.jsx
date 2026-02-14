@@ -54,8 +54,8 @@ const Footer = () => {
             {/* Social Links */}
             <div className="flex flex-wrap gap-3">
               <SocialLink Icon={Twitter} url="https://twitter.com/" />
-              <SocialLink Icon={Instagram} url="https://instagram.com/" />
-              <SocialLink Icon={Youtube} url="https://youtube.com/" />
+              <SocialLink Icon={Instagram} url="https://www.instagram.com/rbx.esports_official/" />
+              <SocialLink Icon={Youtube} url="https://www.youtube.com/@RBXESPORTS" />
               <SocialLink Icon={Twitch} url="https://twitch.tv/" />
               <SocialLink Icon={Facebook} url="https://facebook.com/" />
             </div>

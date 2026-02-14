@@ -4,18 +4,18 @@ import { Linkedin, Twitter, Mail, Shield } from "lucide-react";
 
 const leaders = [
   {
-    name: "ALEX 'VORTEX' MERCER",
+    name: "NISHANT SINGH",
     role: "FOUNDER & CEO",
     image:
-      "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=2574&auto=format&fit=crop",
+      "/images/nishant.jpg",
     bio: "Visionary leader with a decade of competitive experience. Founded RBX to set a new standard in esports excellence.",
     type: "FOUNDER",
   },
   {
-    name: "SARAH 'NOVA' JENKINS",
+    name: "KISHAN PANDIT",
     role: "CO-FOUNDER & COO",
     image:
-      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=2576&auto=format&fit=crop",
+      "/images/kishan.jpg",
     bio: "The strategic mind behind our global operations. Formerly managed top-tier teams in Europe and NA.",
     type: "FOUNDER",
   },
@@ -23,53 +23,53 @@ const leaders = [
 
 const staff = [
   {
-    name: "MICHAEL CHANG",
-    role: "GENERAL MANAGER",
+    name: "MUSKAN VERMA",
+    role: "HIRING MANAGER",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2670&auto=format&fit=crop",
     bio: "Orchestrating the daily operations of our championship rosters.",
     type: "STAFF",
   },
   {
-    name: "DAVID 'HAWK' KIM",
-    role: "HEAD COACH",
+    name: "MD AYZAAN",
+    role: "SLOT MANAGER",
     image:
       "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=2574&auto=format&fit=crop",
     bio: "Tactical mastermind. Led three different rosters to major titles.",
     type: "STAFF",
-  },
-  {
-    name: "ELENA RODRIGUEZ",
-    role: "MARKETING LEAD",
-    image:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=2661&auto=format&fit=crop",
-    bio: "Building the RBX brand and connecting with our global fanbase.",
-    type: "STAFF",
-  },
-  {
-    name: "JESSICA LEE",
-    role: "SOCIAL MEDIA",
-    image:
-      "https://images.unsplash.com/photo-1598550874175-4d7112ee7f43?q=80&w=2670&auto=format&fit=crop",
-    bio: "The voice of the organization. Creator of our viral content.",
-    type: "STAFF",
-  },
-  {
-    name: "MARCUS JOHNSON",
-    role: "CREATIVE DIRECTOR",
-    image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=2574&auto=format&fit=crop",
-    bio: "Defining the visual identity of the next generation of esports.",
-    type: "STAFF",
-  },
-  {
-    name: "EMILY CHEN",
-    role: "HR & TALENT",
-    image:
-      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=2670&auto=format&fit=crop",
-    bio: "Fostering a culture of excellence and well-being.",
-    type: "STAFF",
-  },
+   },
+  // {
+  //   name: "ELENA RODRIGUEZ",
+  //   role: "MARKETING LEAD",
+  //   image:
+  //     "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=2661&auto=format&fit=crop",
+  //   bio: "Building the RBX brand and connecting with our global fanbase.",
+  //   type: "STAFF",
+  // },
+  // {
+  //   name: "JESSICA LEE",
+  //   role: "SOCIAL MEDIA",
+  //   image:
+  //     "https://images.unsplash.com/photo-1598550874175-4d7112ee7f43?q=80&w=2670&auto=format&fit=crop",
+  //   bio: "The voice of the organization. Creator of our viral content.",
+  //   type: "STAFF",
+  // },
+  // {
+  //   name: "MARCUS JOHNSON",
+  //   role: "CREATIVE DIRECTOR",
+  //   image:
+  //     "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=2574&auto=format&fit=crop",
+  //   bio: "Defining the visual identity of the next generation of esports.",
+  //   type: "STAFF",
+  // },
+  // {
+  //   name: "EMILY CHEN",
+  //   role: "HR & TALENT",
+  //   image:
+  //     "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=2670&auto=format&fit=crop",
+  //   bio: "Fostering a culture of excellence and well-being.",
+  //   type: "STAFF",
+  // },
 ];
 
 const SocialIcon = ({ Icon }) => (

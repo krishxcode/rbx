@@ -10,7 +10,7 @@ export const PlayerSpotlight = () => {
             <div className="lg:w-1/2 z-10">
                 <span className="text-brand-red font-bold tracking-[0.3em] uppercase mb-4 block">Player Spotlight</span>
                 <h2 className="text-6xl md:text-8xl font-display font-bold text-white leading-none mb-6">
-                    VIPER
+                    RBX GARRY
                 </h2>
                 <div className="text-2xl text-gray-400 font-light mb-8">
                     "Precision is not an act, it is a habit."
