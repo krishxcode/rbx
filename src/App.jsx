@@ -16,9 +16,10 @@ import StreamsHighlights from "./components/StreamsHighlights";
 import { Management } from "./pages/Management";
 
 import { AdminDashboard } from "./admin/AdminDashboard";
-import  {AdminLogin}  from "./admin/AdminLogin";
+import { AdminLogin } from "./admin/AdminLogin";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { JoinSection } from "./components/JoinSection";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -52,11 +53,10 @@ function App() {
               <Route path="/media" element={<StreamsHighlights />} />
               <Route path="/management" element={<Management />} />
               <Route path="/join" element={<JoinSection />} />
-
+              <Route path="*" element={<NotFound />} />
 
               {/* Admin Login */}
               <Route path="/protected" element={<AdminLogin />} />
-              {/* <Route path="/protected" element={<AdminDashboard />} /> */}
 
               {/* Protected Dashboard */}
               <Route

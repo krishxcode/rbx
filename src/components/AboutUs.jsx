@@ -59,20 +59,20 @@ export const AboutUs = () => {
                 <div className="lg:w-1/2 relative">
                     <div className="grid grid-cols-2 gap-4 h-full">
                          <div className="bg-brand-gray/50 p-8 flex flex-col justify-center items-center border border-white/5 hover:border-brand-red/30 transition-colors">
-                            <span className="text-5xl font-display font-bold text-white mb-2">50+</span>
+                            <span className="text-5xl font-display font-bold text-white mb-2">30+</span>
                             <span className="text-xs uppercase tracking-widest text-gray-500">Championships</span>
                          </div>
                          <div className="bg-brand-gray/50 p-8 flex flex-col justify-center items-center border border-white/5 hover:border-brand-red/30 transition-colors mt-8">
-                            <span className="text-5xl font-display font-bold text-white mb-2">2M+</span>
-                            <span className="text-xs uppercase tracking-widest text-gray-500">Global Fans</span>
+                            <span className="text-5xl font-display font-bold text-white mb-2">1K+</span>
+                            <span className="text-xs uppercase tracking-widest text-gray-500">Community Members</span>
                          </div>
                          <div className="bg-brand-gray/50 p-8 flex flex-col justify-center items-center border border-white/5 hover:border-brand-red/30 transition-colors -mt-8">
                             <span className="text-5xl font-display font-bold text-white mb-2">4</span>
                             <span className="text-xs uppercase tracking-widest text-gray-500">Game Titles</span>
                          </div>
                          <div className="bg-brand-gray/50 p-8 flex flex-col justify-center items-center border border-white/5 hover:border-brand-red/30 transition-colors">
-                            <span className="text-5xl font-display font-bold text-white mb-2">#1</span>
-                            <span className="text-xs uppercase tracking-widest text-gray-500">Regional Rank</span>
+                            <span className="text-5xl font-display font-bold text-white mb-2">2025</span>
+                            <span className="text-xs uppercase tracking-widest text-gray-500">Founded</span>
                          </div>
                     </div>
                 </div>

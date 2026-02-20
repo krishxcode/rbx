@@ -1,160 +1,191 @@
-import React, { useState } from "react";
-import {
-  Plus,
-  Search,
-  Calendar,
-  Edit2,
-  Trash2,
-  MoreVertical,
-  Filter,
-} from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Plus, Search, Edit2, Trash2, X } from "lucide-react";
 
-const initialMatches = [
-  {
-    id: 1,
-    game: "VALORANT",
-    tournament: "Challengers League",
-    team1: "RBX Esports",
-    team2: "Sentinels",
-    date: "2024-11-20",
-    time: "20:00",
-    status: "Upcoming",
-  },
-  {
-    id: 2,
-    game: "BGMI",
-    tournament: "Pro Series S3",
-    team1: "RBX Squad",
-    team2: "Team Soul",
-    date: "2024-11-21",
-    time: "18:00",
-    status: "Scheduled",
-  },
-  {
-    id: 3,
-    game: "FREE FIRE",
-    tournament: "World Series",
-    team1: "RBX Elite",
-    team2: "LOUD",
-    date: "2024-11-19",
-    time: "16:00",
-    status: "Finished",
-  },
-];
+import {
+  collection,
+  addDoc,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
+
+import { db } from "../firebase";
 
 export const MatchCenter = () => {
-  const [matches, setMatches] = useState(initialMatches);
+  const [tournaments, setTournaments] = useState([]);
+  const [search, setSearch] = useState("");
+
+  const emptyForm = {
+    date: "",
+    game: "",
+    name: "",
+    location: "",
+    prize: "",
+    status: "UPCOMING",
+    rank: "",
+    points: "",
+  };
+
+  const [formData, setFormData] = useState(emptyForm);
+  const [editing, setEditing] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const tournamentsRef = collection(db, "tournaments");
+
+  const loadData = async () => {
+    const snapshot = await getDocs(tournamentsRef);
+    const data = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setTournaments(data);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const filtered = tournaments.filter(
+    (t) =>
+      t.name?.toLowerCase().includes(search.toLowerCase()) ||
+      t.game?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const openNew = () => {
+    setEditing(null);
+    setFormData(emptyForm);
+    setShowModal(true);
+  };
+
+  const openEdit = (t) => {
+    setEditing(t);
+    setFormData(t);
+    setShowModal(true);
+  };
+
+  const saveTournament = async () => {
+    if (editing) {
+      const ref = doc(db, "tournaments", editing.id);
+      await updateDoc(ref, formData);
+    } else {
+      await addDoc(tournamentsRef, formData);
+    }
+
+    setShowModal(false);
+    loadData();
+  };
+
+  const deleteTournament = async (id) => {
+    if (!window.confirm("Delete tournament?")) return;
+    await deleteDoc(doc(db, "tournaments", id));
+    loadData();
+  };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 px-2 sm:px-4 md:px-6">
+      {/* HEADER */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h2 className="text-3xl font-display font-bold text-white mb-1">
-            MATCH CENTER
-          </h2>
-          <p className="text-gray-400 text-sm">
-            Schedule and manage competitive matches.
-          </p>
-        </div>
-        <button className="flex items-center gap-2 bg-brand-red text-white px-6 py-2.5 rounded-lg font-bold hover:bg-red-700 transition-colors shadow-lg shadow-brand-red/20">
-          <Plus size={18} /> Schedule Match
+        <h2 className="text-2xl sm:text-3xl font-bold text-white">
+          TOURNAMENT SCHEDULE CONTROL
+        </h2>
+
+        <button
+          onClick={openNew}
+          className="flex items-center gap-2 bg-brand-red px-6 py-3 rounded-lg font-bold w-full md:w-auto justify-center"
+        >
+          <Plus size={18} /> Add Tournament
         </button>
       </div>
 
-      {/* Toolbar */}
-      <div className="flex flex-col md:flex-row gap-4 bg-[#111] p-4 rounded-lg border border-white/10">
-        <div className="relative flex-1">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
-            size={18}
-          />
-          <input
-            type="text"
-            placeholder="Search matches by team or tournament..."
-            className="w-full bg-black/50 border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-sm text-white focus:border-brand-red focus:outline-none"
-          />
-        </div>
-        <div className="flex gap-2">
-          <button className="flex items-center gap-2 px-4 py-2.5 bg-black/50 border border-white/10 rounded-lg text-sm font-bold text-gray-400 hover:text-white hover:border-white/30 transition-colors">
-            <Filter size={16} /> Filter
-          </button>
-          <button className="flex items-center gap-2 px-4 py-2.5 bg-black/50 border border-white/10 rounded-lg text-sm font-bold text-gray-400 hover:text-white hover:border-white/30 transition-colors">
-            <Calendar size={16} /> Date
-          </button>
-        </div>
+      {/* SEARCH */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+        <input
+          placeholder="Search tournament..."
+          className="w-full bg-black border border-white/10 pl-10 p-3 rounded text-white"
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
 
-      {/* Matches Table */}
-      <div className="bg-[#111] border border-white/10 rounded-xl overflow-hidden">
+      {/* ================= MOBILE CARD VIEW ================= */}
+      <div className="space-y-4 md:hidden">
+        {filtered.map((t) => (
+          <div
+            key={t.id}
+            className="bg-[#111] border border-white/10 p-4 rounded-xl space-y-2"
+          >
+            <div className="flex justify-between">
+              <div>
+                <div className="text-brand-red text-xs">{t.game}</div>
+                <div className="font-bold text-lg">{t.name}</div>
+              </div>
+
+              <div className="text-sm">{t.status}</div>
+            </div>
+
+            <div className="text-sm text-gray-400">📅 {t.date}</div>
+            <div className="text-sm">📍 {t.location}</div>
+            <div className="text-sm">💰 {t.prize}</div>
+
+            <div className="text-sm">
+              Rank: {t.rank} | Points: {t.points}
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <button onClick={() => openEdit(t)}>
+                <Edit2 size={18} />
+              </button>
+              <button onClick={() => deleteTournament(t.id)}>
+                <Trash2 size={18} />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* ================= DESKTOP TABLE VIEW ================= */}
+      <div className="hidden md:block bg-[#111] border border-white/10 rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="bg-white/5 text-gray-400 text-xs font-bold uppercase tracking-wider border-b border-white/5">
-                <th className="p-4">Game & Tournament</th>
-                <th className="p-4">Matchup</th>
-                <th className="p-4">Schedule</th>
+          <table className="w-full text-left min-w-[900px]">
+            <thead className="bg-white/5 text-xs text-gray-400 uppercase">
+              <tr>
+                <th className="p-4">Date</th>
+                <th className="p-4">Tournament</th>
+                <th className="p-4">Location</th>
+                <th className="p-4">Prize</th>
                 <th className="p-4">Status</th>
+                <th className="p-4">Result</th>
                 <th className="p-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
-              {matches.map((match) => (
-                <tr
-                  key={match.id}
-                  className="hover:bg-white/5 transition-colors group"
-                >
+
+            <tbody>
+              {filtered.map((t) => (
+                <tr key={t.id} className="border-t border-white/5">
+                  <td className="p-4">{t.date}</td>
+
                   <td className="p-4">
-                    <div className="flex flex-col">
-                      <span className="font-bold text-brand-red text-xs uppercase tracking-widest mb-1">
-                        {match.game}
-                      </span>
-                      <span className="text-white font-medium">
-                        {match.tournament}
-                      </span>
-                    </div>
+                    <div className="text-brand-red text-xs">{t.game}</div>
+                    <div className="font-bold">{t.name}</div>
                   </td>
+
+                  <td className="p-4">{t.location}</td>
+                  <td className="p-4">{t.prize}</td>
+                  <td className="p-4">{t.status}</td>
+
                   <td className="p-4">
-                    <div className="flex items-center gap-3 text-sm font-bold text-white">
-                      <span>{match.team1}</span>
-                      <span className="text-gray-500 text-xs font-normal">
-                        VS
-                      </span>
-                      <span>{match.team2}</span>
-                    </div>
+                    <div>{t.rank}</div>
+                    <div className="text-xs text-gray-500">{t.points}</div>
                   </td>
-                  <td className="p-4">
-                    <div className="flex flex-col text-sm">
-                      <span className="text-white">{match.date}</span>
-                      <span className="text-gray-500 text-xs">
-                        {match.time} EST
-                      </span>
-                    </div>
-                  </td>
-                  <td className="p-4">
-                    <span
-                      className={`px-2 py-1 rounded text-[10px] font-bold uppercase border ${
-                        match.status === "Upcoming"
-                          ? "bg-blue-500/10 text-blue-500 border-blue-500/20"
-                          : match.status === "Finished"
-                          ? "bg-gray-500/10 text-gray-500 border-gray-500/20"
-                          : "bg-green-500/10 text-green-500 border-green-500/20"
-                      }`}
-                    >
-                      {match.status}
-                    </span>
-                  </td>
+
                   <td className="p-4 text-right">
-                    <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button
-                        className="p-2 hover:bg-blue-500/20 hover:text-blue-500 rounded transition-colors"
-                        title="Edit"
-                      >
+                    <div className="flex justify-end gap-2">
+                      <button onClick={() => openEdit(t)}>
                         <Edit2 size={16} />
                       </button>
-                      <button
-                        className="p-2 hover:bg-red-500/20 hover:text-red-500 rounded transition-colors"
-                        title="Delete"
-                      >
+
+                      <button onClick={() => deleteTournament(t.id)}>
                         <Trash2 size={16} />
                       </button>
                     </div>
@@ -165,6 +196,62 @@ export const MatchCenter = () => {
           </table>
         </div>
       </div>
+
+      {/* ================= MODAL ================= */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50 p-4">
+          <div className="bg-[#111] p-6 rounded-xl w-full max-w-lg space-y-3 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between">
+              <h3 className="font-bold text-xl">
+                {editing ? "Edit Tournament" : "New Tournament"}
+              </h3>
+
+              <button onClick={() => setShowModal(false)}>
+                <X />
+              </button>
+            </div>
+
+            {[
+              ["Date", "date"],
+              ["Game Name", "game"],
+              ["Tournament Name", "name"],
+              ["Location", "location"],
+              ["Prize Pool", "prize"],
+              ["Rank", "rank"],
+              ["Points", "points"],
+            ].map(([label, key]) => (
+              <input
+                key={key}
+                placeholder={label}
+                className="w-full bg-black border border-white/10 p-3 rounded text-white"
+                value={formData[key] || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, [key]: e.target.value })
+                }
+              />
+            ))}
+
+            <select
+              className="w-full bg-black border border-white/10 p-3 rounded text-white"
+              value={formData.status}
+              onChange={(e) =>
+                setFormData({ ...formData, status: e.target.value })
+              }
+            >
+              <option>LIVE</option>
+              <option>UPCOMING</option>
+              <option>COMPLETED</option>
+            </select>
+
+            <button
+              onClick={saveTournament}
+              className="w-full bg-brand-red py-3 font-bold rounded"
+            >
+              Save Tournament
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

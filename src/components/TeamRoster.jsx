@@ -1,277 +1,77 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Target, MapPin, Shield } from "lucide-react";
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "../firebase";
 
 // Mock Data Structure
-const rosterData = {
-  "FREE FIRE": [
-    {
-      id: "ff-main",
-      name: "RBX ESPORTS",
-      players: [
-        {
-          name: "RBX ARYAN",
-          role: " PRIMARY RUSHER",
-          kda: "4.2",
-          matches: "156",
-          country: "IND",
-          img: "https://images.unsplash.com/photo-1628157588553-5eeea00af15c?q=80&w=2680&auto=format&fit=crop",
-        },
-        {
-          name: "RBX GARRY",
-          role: "ASSULTER",
-          kda: "5.1",
-          matches: "142",
-          country: "IND",
-          img: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=2680&auto=format&fit=crop",
-        },
-        {
-          name: "RBX HIMU",
-          role: "IGL",
-          kda: "3.8",
-          matches: "189",
-          country: "IND",
-          img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=2574&auto=format&fit=crop",
-        },
-        {
-          name: "RBX DARSHAN",
-          role: "SNIPER",
-          kda: "3.5",
-          matches: "160",
-          country: "IND",
-          img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2574&auto=format&fit=crop",
-        },
-        {
-          name: "RBX SUNNY",
-          role: "SECONDRY RUSHER",
-          kda: "3.5",
-          matches: "160",
-          country: "IND",
-          img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2574&auto=format&fit=crop",
-        },
-      ],
-    },
-    {
-      id: "ff-academy",
-      name: "RBX X CHILL",
-      players: [
-        {
-          name: "NOVA",
-          role: "RUSHER",
-          kda: "3.1",
-          matches: "45",
-          country: "IND",
-          img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=2574&auto=format&fit=crop",
-        },
-        {
-          name: "BLAZE",
-          role: "SUPPORT",
-          kda: "2.8",
-          matches: "40",
-          country: "IND",
-          img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=2574&auto=format&fit=crop",
-        },
-        {
-          name: "SHADOW",
-          role: "SNIPER",
-          kda: "3.5",
-          matches: "52",
-          country: "IND",
-          img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=2574&auto=format&fit=crop",
-        },
-        {
-          name: "FROST",
-          role: "FLANKER",
-          kda: "3.2",
-          matches: "38",
-          country: "IND",
-          img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2670&auto=format&fit=crop",
-        },
-      ],
-    },
-    {
-      id: "ff-rising",
-      name: "RBX X CRYPTEX",
-      players: [
-        {
-          name: "AXEL",
-          role: "ASSAULT",
-          kda: "2.5",
-          matches: "12",
-          country: "IND",
-          img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=2564&auto=format&fit=crop",
-        },
-        {
-          name: "JINX",
-          role: "SCOUT",
-          kda: "2.1",
-          matches: "10",
-          country: "IND",
-          img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=2459&auto=format&fit=crop",
-        },
-      ],
-    // },
-    // {
-    //   id: "ff-women",
-    //   name: "RBX FF WOMEN",
-    //   players: [
-    //     {
-    //       name: "VALKYRIE",
-    //       role: "IGL",
-    //       kda: "4.0",
-    //       matches: "85",
-    //       country: "IND",
-    //       img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=2576&auto=format&fit=crop",
-    //     },
-    //     {
-    //       name: "SIREN",
-    //       role: "SNIPER",
-    //       kda: "4.5",
-    //       matches: "82",
-    //       country: "IND",
-    //       img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=2661&auto=format&fit=crop",
-    //     },
-    //     {
-    //       name: "LUNA",
-    //       role: "RUSHER",
-    //       kda: "3.9",
-    //       matches: "78",
-    //       country: "IND",
-    //       img: "https://images.unsplash.com/photo-1598550874175-4d7112ee7f43?q=80&w=2670&auto=format&fit=crop",
-    //     },
-    //     {
-    //       name: "SAGE",
-    //       role: "SUPPORT",
-    //       kda: "3.6",
-    //       matches: "80",
-    //       country: "IND",
-    //       img: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=2670&auto=format&fit=crop",
-    //     },
-    //   ],
-    },
-  ],
-  VALORANT: [
-    {
-      id: "val-main",
-      name: "UPCOMING",
-      players: [
-        // {
-        //   name: "VIPER",
-        //   role: "CONTROLLER",
-        //   kda: "1.12",
-        //   matches: "240",
-        //   country: "USA",
-        //   img: "https://images.unsplash.com/photo-1583195764036-6dc248ac07d9?q=80&w=2676&auto=format&fit=crop",
-        // },
-        // {
-        //   name: "KAI",
-        //   role: "INITIATOR",
-        //   kda: "1.28",
-        //   matches: "215",
-        //   country: "CAN",
-        //   img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2574&auto=format&fit=crop",
-        // },
-        // {
-        //   name: "ZEUS",
-        //   role: "SENTINEL",
-        //   kda: "1.05",
-        //   matches: "230",
-        //   country: "USA",
-        //   img: "https://images.unsplash.com/photo-1531891437562-4301cf35b7e4?q=80&w=2664&auto=format&fit=crop",
-        // },
-        // {
-        //   name: "JET",
-        //   role: "DUELIST",
-        //   kda: "1.45",
-        //   matches: "220",
-        //   country: "KR",
-        //   img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=2574&auto=format&fit=crop",
-        // },
-        // {
-        //   name: "OMEN",
-        //   role: "FLEX",
-        //   kda: "1.10",
-        //   matches: "180",
-        //   country: "USA",
-        //   img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=2574&auto=format&fit=crop",
-        // },
-      ],
-    },
-    {
-      id: "val-academy",
-      name: "UPCOMING",
-      players: [
-        // {
-        //   name: "SPARK",
-        //   role: "DUELIST",
-        //   kda: "1.30",
-        //   matches: "40",
-        //   country: "UK",
-        //   img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=2574&auto=format&fit=crop",
-        // },
-        // {
-        //   name: "VOID",
-        //   role: "CONTROLLER",
-        //   kda: "0.98",
-        //   matches: "35",
-        //   country: "UK",
-        //   img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2670&auto=format&fit=crop",
-        // },
-      ],
-    },
-  ],
-  BGMI: [
-    {
-      id: "bgmi-main",
-      name: "UPCOMING",
-      players: [
-        // {
-        //   name: "STRIKER",
-        //   role: "IGL",
-        //   kda: "4.2",
-        //   matches: "350",
-        //   country: "IND",
-        //   img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2574&auto=format&fit=crop",
-        // },
-        // {
-        //   name: "BLAZE",
-        //   role: "ASSAULTER",
-        //   kda: "5.1",
-        //   matches: "340",
-        //   country: "IND",
-        //   img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=2574&auto=format&fit=crop",
-        // },
-        // {
-        //   name: "GHOST",
-        //   role: "SUPPORT",
-        //   kda: "3.8",
-        //   matches: "330",
-        //   country: "IND",
-        //   img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2670&auto=format&fit=crop",
-        // },
-        // {
-        //   name: "NEXUS",
-        //   role: "SNIPER",
-        //   kda: "4.5",
-        //   matches: "345",
-        //   country: "IND",
-        //   img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=2574&auto=format&fit=crop",
-        // },
-      ],
-    },
-  ],
-};
+const GAME_ORDER = ["FREE FIRE", "VALORANT", "BGMI"];
 
 export const TeamRoster = () => {
   const [activeTeamId, setActiveTeamId] = useState("ff-main");
   const [openDropdown, setOpenDropdown] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [rosterData, setRosterData] = useState({});
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+  useEffect(() => {
+    let teamsCache = [];
+    let playersCache = [];
+
+    const rebuildRoster = () => {
+      if (!teamsCache.length) return;
+
+      const grouped = {};
+
+      teamsCache.forEach((team) => {
+        if (!grouped[team.game]) grouped[team.game] = [];
+
+        grouped[team.game].push({
+          id: team.id,
+          name: team.name,
+          players: playersCache.filter((p) => p.teamId === team.id),
+        });
+      });
+
+      setRosterData(grouped);
+
+      if (!activeTeamId || !grouped) return;
+
+      if (grouped["FREE FIRE"] && grouped["FREE FIRE"][0]) {
+        setActiveTeamId(grouped["FREE FIRE"][0].id);
+      } else {
+        const firstGame = Object.keys(grouped)[0];
+        if (firstGame && grouped[firstGame][0]) {
+          setActiveTeamId(grouped[firstGame][0].id);
+        }
+      }
+    };
+
+    const unsubTeams = onSnapshot(collection(db, "teams"), (snap) => {
+      teamsCache = snap.docs.map((d) => ({
+        id: d.id,
+        ...d.data(),
+      }));
+      rebuildRoster();
+    });
+
+    const unsubPlayers = onSnapshot(collection(db, "players"), (snap) => {
+      playersCache = snap.docs.map((d) => ({
+        id: d.id,
+        ...d.data(),
+      }));
+      rebuildRoster();
+    });
+
+    return () => {
+      unsubTeams();
+      unsubPlayers();
+    };
   }, []);
 
   const handleGameInteraction = (game, type) => {
@@ -295,7 +95,11 @@ export const TeamRoster = () => {
       const team = rosterData[game].find((t) => t.id === activeTeamId);
       if (team) return team;
     }
-    return rosterData["FREE FIRE"][0];
+
+    const firstGame = Object.keys(rosterData)[0];
+    if (!firstGame) return null;
+
+    return rosterData[firstGame][0] || null;
   };
 
   const currentTeam = getCurrentTeam();
@@ -367,7 +171,7 @@ export const TeamRoster = () => {
         </div>
 
         <nav className="flex flex-wrap justify-center gap-6 mb-20 relative z-20">
-          {Object.keys(rosterData).map((game) => (
+          {GAME_ORDER.filter((g) => rosterData[g]).map((game) => (
             <div
               key={game}
               className="relative"
@@ -442,15 +246,17 @@ export const TeamRoster = () => {
           >
             <div className="flex items-center gap-6 mb-12">
               <div className="h-px bg-gradient-to-r from-transparent to-brand-red flex-1"></div>
+              <div className="px-6 py-2 border border-brand-red/30 bg-brand-red/5 skew-x-[-12deg]">
               <h3 className="text-3xl font-display font-bold text-white uppercase tracking-widest flex items-center gap-3">
                 <Shield size={24} className="text-brand-red" />
-                {currentTeam.name} ROSTER
+                {currentTeam?.name || "LOADING"} ROSTER
               </h3>
+              </div>
               <div className="h-px bg-gradient-to-l from-transparent to-brand-red flex-1"></div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {currentTeam.players.map((player, idx) => (
+              {currentTeam?.players?.map((player, idx) => (
                 <PlayerCard key={idx} player={player} index={idx} />
               ))}
             </div>

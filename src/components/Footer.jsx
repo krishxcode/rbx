@@ -42,7 +42,7 @@ const Footer = () => {
                   RBX <span className="text-brand-red">ESPORTS</span>
                 </span>
                 <span className="text-xs text-gray-500 uppercase block">
-                  Est. 2020
+                  Est. 2025
                 </span>
               </div>
             </div>
@@ -54,8 +54,14 @@ const Footer = () => {
             {/* Social Links */}
             <div className="flex flex-wrap gap-3">
               <SocialLink Icon={Twitter} url="https://twitter.com/" />
-              <SocialLink Icon={Instagram} url="https://www.instagram.com/rbx.esports_official/" />
-              <SocialLink Icon={Youtube} url="https://www.youtube.com/@RBXESPORTS" />
+              <SocialLink
+                Icon={Instagram}
+                url="https://www.instagram.com/rbx.esports_official/"
+              />
+              <SocialLink
+                Icon={Youtube}
+                url="https://www.youtube.com/@RBXESPORTS"
+              />
               <SocialLink Icon={Twitch} url="https://twitch.tv/" />
               <SocialLink Icon={Facebook} url="https://facebook.com/" />
             </div>
@@ -123,7 +129,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between gap-6 text-xs text-gray-500">
           <div className="flex flex-wrap items-center gap-6">
-            <span>© 2024 RBX ESPORTS</span>
+            <span>© 2025 RBX ESPORTS</span>
 
             <button
               onClick={() => navigate("/privacy")}
@@ -157,7 +163,7 @@ const Footer = () => {
 
             <div className="flex items-center gap-2">
               <MapPin size={14} className="text-brand-red" />
-              Global HQ
+              Competitive Hub
             </div>
           </div>
         </div>

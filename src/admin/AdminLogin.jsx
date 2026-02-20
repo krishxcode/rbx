@@ -10,7 +10,10 @@ import {
   AlertCircle,
   CheckCircle,
 } from "lucide-react";
+
 import { useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase"; // adjust path if needed
 
 export const AdminLogin = () => {
   const navigate = useNavigate();
@@ -23,14 +26,14 @@ export const AdminLogin = () => {
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.email) newErrors.email = "Identity verification required";
-    if (!formData.password)
-      newErrors.password = "Security credentials required";
+    if (!formData.email) newErrors.email = "Email required";
+    if (!formData.password) newErrors.password = "Password required";
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSuccess(false);
 
@@ -38,29 +41,24 @@ export const AdminLogin = () => {
 
     setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      await signInWithEmailAndPassword(auth, formData.email, formData.password);
+      localStorage.setItem("adminAuth", "true");
+      setSuccess(true);
 
-      // ✅ Admin Credentials
-      if (formData.email === "admin" && formData.password === "admin") {
-        setSuccess(true);
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1000);
+    } catch (error) {
+      setErrors({ form: "Invalid credentials. Access denied." });
+    }
 
-        // Save login
-        localStorage.setItem("adminAuth", "true");
-
-        // Redirect to dashboard
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 1000);
-      } else {
-        setErrors({ form: "Invalid credentials. Access denied." });
-      }
-    }, 1500);
+    setIsLoading(false);
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] flex items-center justify-center p-4 relative overflow-hidden font-sans selection:bg-brand-red selection:text-white">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_#1a1a1a_0%,_#000000_100%)] z-0"></div>
+    <div className="min-h-screen bg-[#050505] flex items-center justify-center p-4 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_#1a1a1a_0%,_#000000_100%)]"></div>
 
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -68,24 +66,18 @@ export const AdminLogin = () => {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md relative z-10"
       >
-        {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-red/10 border border-brand-red/20 rounded-2xl mb-4 shadow-[0_0_30px_rgba(255,0,51,0.2)]">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-red/10 border border-brand-red/20 rounded-2xl mb-4">
             <Shield size={32} className="text-brand-red" />
           </div>
 
           <h1 className="text-4xl font-bold text-white">
             ADMIN <span className="text-brand-red">PANEL</span>
           </h1>
-          <p className="text-gray-500 text-xs uppercase tracking-widest">
-            Restricted Access
-          </p>
         </div>
 
-        {/* Login Card */}
-        <div className="bg-[#0a0a0a] border border-white/10 p-8 rounded-xl shadow-2xl">
+        <div className="bg-[#0a0a0a] border border-white/10 p-8 rounded-xl">
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Form Error */}
             {errors.form && (
               <div className="bg-red-500/10 border border-red-500/20 text-red-500 p-3 rounded flex items-center gap-2 text-sm">
                 <AlertCircle size={16} />
@@ -93,44 +85,36 @@ export const AdminLogin = () => {
               </div>
             )}
 
-            {/* Success */}
             {success && (
               <div className="bg-green-500/10 border border-green-500/20 text-green-500 p-3 rounded flex items-center gap-2 text-sm">
                 <CheckCircle size={16} />
-                Authentication Successful...
+                Login Successful
               </div>
             )}
 
-            {/* Username */}
             <div>
-              <label className="text-xs text-gray-400 uppercase">
-                Username
-              </label>
+              <label className="text-xs text-gray-400 uppercase">Email</label>
               <div className="relative mt-2">
                 <User
                   size={18}
                   className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
                 />
                 <input
-                  type="text"
-                  placeholder="admin"
+                  type="email"
                   className="w-full bg-black border border-white/10 text-white pl-10 p-3 rounded focus:border-brand-red outline-none"
                   value={formData.email}
                   onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      email: e.target.value,
-                    })
+                    setFormData({ ...formData, email: e.target.value })
                   }
                 />
               </div>
             </div>
 
-            {/* Password */}
             <div>
               <label className="text-xs text-gray-400 uppercase">
                 Password
               </label>
+
               <div className="relative mt-2">
                 <Lock
                   size={18}
@@ -139,14 +123,10 @@ export const AdminLogin = () => {
 
                 <input
                   type={showPassword ? "text" : "password"}
-                  placeholder="admin"
                   className="w-full bg-black border border-white/10 text-white pl-10 pr-10 p-3 rounded focus:border-brand-red outline-none"
                   value={formData.password}
                   onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      password: e.target.value,
-                    })
+                    setFormData({ ...formData, password: e.target.value })
                   }
                 />
 
@@ -160,7 +140,6 @@ export const AdminLogin = () => {
               </div>
             </div>
 
-            {/* Login Button */}
             <button
               type="submit"
               disabled={isLoading || success}
