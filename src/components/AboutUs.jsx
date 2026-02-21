@@ -42,7 +42,7 @@ export const AboutUs = () => {
                     
                     <div className="space-y-6 text-gray-400 text-lg font-light leading-relaxed">
                         <p>
-                            <strong className="text-white">RBX ESPORTS</strong> was founded in 2020 with a singular vision: to dismantle the status quo of competitive gaming. What started as a collective of high-elo outcasts has evolved into a global powerhouse, challenging titans and claiming trophies across multiple titles.
+                            <strong className="text-white">RBX ESPORTS</strong> was founded in 2025 with a singular vision: to dismantle the status quo of competitive gaming. What started as a collective of high-elo outcasts has evolved into a global powerhouse, challenging titans and claiming trophies across multiple titles.
                         </p>
                         <p>
                             We are not just a team; we are a movement. From the streets of the underground circuit to the main stages of world championships, our journey is fueled by an unyielding hunger for victory. Our mission is to redefine professional esports through aggressive gameplay and unwavering dedication.
