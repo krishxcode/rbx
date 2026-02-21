@@ -84,7 +84,7 @@ const Footer = () => {
                 text="News & Media"
                 action={() => navigate("/media")}
               />
-              <FooterLink text="Shop Merch" badge="NEW" />
+              <FooterLink text="Shop Merch" badge="NEW" action={() => navigate("/shop")} />
             </ul>
           </div>
 
