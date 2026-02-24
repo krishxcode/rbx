@@ -71,8 +71,8 @@ export const PlayerManager = ({ teamId }) => {
   /* ---------- IMAGE UPLOAD ---------- */
   const uploadImage = async (file) => {
     const compressed = await imageCompression(file, {
-      maxSizeMB: 0.2,
-      maxWidthOrHeight: 400,
+      maxSizeMB: 1.5,
+      maxWidthOrHeight: 1200,
       useWebWorker: true,
     });
 

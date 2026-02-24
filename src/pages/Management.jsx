@@ -6,16 +6,14 @@ const leaders = [
   {
     name: "NISHANT SINGH",
     role: "FOUNDER & CEO",
-    image:
-      "/images/nishant.jpg",
+    image: "/images/nishant.jpg",
     bio: "Visionary leader with a decade of competitive experience. Founded RBX to set a new standard in esports excellence.",
     type: "FOUNDER",
   },
   {
     name: "KISHAN PANDIT",
     role: "CO-FOUNDER & COO",
-    image:
-      "/images/kishan.jpg",
+    image: "/images/kishan.jpg",
     bio: "The strategic mind behind our global operations. Formerly managed top-tier teams in Europe and NA.",
     type: "FOUNDER",
   },
@@ -25,19 +23,18 @@ const staff = [
   {
     name: "MUSKAN VERMA",
     role: "HIRING MANAGER",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2670&auto=format&fit=crop",
+    image: "/images/hr.jpg",
     bio: "Orchestrating the daily operations of our championship rosters.",
     type: "STAFF",
   },
   {
-    name: "MD AYZAAN",
+    name: "VIVEK SINGH",
     role: "SLOT MANAGER",
     image:
       "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=2574&auto=format&fit=crop",
     bio: "Tactical mastermind. Led three different rosters to major titles.",
     type: "STAFF",
-   },
+  },
   // {
   //   name: "ELENA RODRIGUEZ",
   //   role: "MARKETING LEAD",
