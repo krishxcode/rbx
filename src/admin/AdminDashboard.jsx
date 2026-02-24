@@ -13,7 +13,6 @@ import {
   X,
 } from "lucide-react";
 import { db } from "../firebase";
-
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
@@ -26,6 +25,7 @@ import { ContentManager } from "./ContentManager";
 import { TeamRoster } from "./TeamRoster";
 import { SettingsPage } from "./Settings";
 import RecruitmentManagement from "./RecruitmentManagement";
+import JoinRequests from "./JoinRequests";
 
 export const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -93,6 +93,8 @@ export const AdminDashboard = () => {
         return <MatchCenter />;
       case "applications":
         return <Applications />;
+      case "joinRequests":
+        return <JoinRequests />;
       case "content":
         return <ContentManager />;
       case "roster":
@@ -181,6 +183,7 @@ export const AdminDashboard = () => {
           <NavItem id="overview" icon={LayoutDashboard} label="Overview" />
           <NavItem id="matches" icon={Trophy} label="Match Center" />
           <NavItem id="applications" icon={Users} label="Applications" />
+          <NavItem id="joinRequests" icon={Users} label="Join Requests" />
           <NavItem id="content" icon={FileText} label="Content" />
           <NavItem id="roster" icon={Gamepad2} label="Team Roster" />
           <NavItem id="recruitment" icon={Users} label="Recruitment" />

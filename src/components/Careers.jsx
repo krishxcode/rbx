@@ -40,8 +40,7 @@ export const Careers = () => {
 
   const filteredJobs =
     filter === "All" ? jobs : jobs.filter((j) => j.category === filter);
-
-  const visibleJobs = filteredJobs.slice(0, 4);
+  const visibleJobs = filteredJobs;
 
   const openApply = (job) => {
     setSelectedJob(job);
@@ -237,13 +236,35 @@ export const Careers = () => {
                 <input
                   placeholder="UID"
                   inputMode="numeric"
+                  required
                   className="w-full bg-black border p-3 rounded"
                   onChange={(e) =>
-                    setAppData({ ...appData, uid: e.target.value })
+                    setAppData({
+                      ...appData,
+                      uid: e.target.value.replace(/\D/g, ""),
+                    })
                   }
                 />
+
+                {/* MOBILE NUMBER */}
+                <input
+                  placeholder="Mobile Number"
+                  type="tel"
+                  required
+                  maxLength={10}
+                  pattern="[0-9]{10}"
+                  className="w-full bg-black border p-3 rounded"
+                  onChange={(e) =>
+                    setAppData({
+                      ...appData,
+                      phone: e.target.value.replace(/\D/g, "").slice(0, 10),
+                    })
+                  }
+                />
+
                 <input
                   placeholder="Discord ID (username#1234)"
+                  required
                   className="w-full bg-black border p-3 rounded"
                   onChange={(e) =>
                     setAppData({ ...appData, discord: e.target.value })
@@ -253,6 +274,7 @@ export const Careers = () => {
                 <input
                   placeholder="Email"
                   type="email"
+                  required
                   className="w-full bg-black border p-3 rounded"
                   onChange={(e) =>
                     setAppData({ ...appData, email: e.target.value })
@@ -261,18 +283,22 @@ export const Careers = () => {
 
                 <input
                   placeholder="IGN"
+                  required
                   className="w-full bg-black border p-3 rounded"
                   onChange={(e) =>
                     setAppData({ ...appData, ign: e.target.value })
                   }
                 />
+
                 <input
                   placeholder="Experience"
+                  required
                   className="w-full bg-black border p-3 rounded"
                   onChange={(e) =>
                     setAppData({ ...appData, experience: e.target.value })
                   }
                 />
+
                 <div className="space-y-2">
                   <p className="text-sm text-gray-400 font-semibold">
                     Available Time
@@ -320,22 +346,44 @@ export const Careers = () => {
 
             {selectedJob.category === "Management" && (
               <>
+                {/* MOBILE NUMBER */}
+                <input
+                  placeholder="Mobile Number"
+                  type="tel"
+                  required
+                  maxLength={10}
+                  pattern="[0-9]{10}"
+                  className="w-full bg-black border p-3 rounded"
+                  onChange={(e) =>
+                    setAppData({
+                      ...appData,
+                      phone: e.target.value.replace(/\D/g, "").slice(0, 10),
+                    })
+                  }
+                />
+
                 <input
                   placeholder="Email"
+                  type="email"
+                  required
                   className="w-full bg-black border p-3 rounded"
                   onChange={(e) =>
                     setAppData({ ...appData, email: e.target.value })
                   }
                 />
+
                 <input
                   placeholder="Skills"
+                  required
                   className="w-full bg-black border p-3 rounded"
                   onChange={(e) =>
                     setAppData({ ...appData, skills: e.target.value })
                   }
                 />
+
                 <input
                   placeholder="Portfolio Link"
+                  type="url"
                   className="w-full bg-black border p-3 rounded"
                   onChange={(e) =>
                     setAppData({ ...appData, portfolio: e.target.value })

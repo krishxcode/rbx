@@ -26,12 +26,13 @@ function App() {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
 
+  // Hide navbar & footer on admin pages
   const hideLayout =
     location.pathname.startsWith("/dashboard") ||
     location.pathname.startsWith("/protected");
 
   return (
-    <div className="relative min-h-screen bg-brand-dark text-white overflow-hidden">
+    <div className="relative min-h-screen bg-brand-dark text-white">
       {/* Loading Screen */}
       <AnimatePresence mode="wait">
         {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
@@ -44,19 +45,17 @@ function App() {
           <main>
             <ScrollToTop />
 
-            {/* 🔥 GAME MENU STYLE SLIDE */}
+            {/* 🔥 SMOOTH ROUTE TRANSITION */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={location.pathname}
-                initial={{ x: "100%", opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: "-100%", opacity: 0 }}
-                transition={{
-                  duration: 0.45,
-                  ease: "easeInOut",
-                }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.35 }}
               >
                 <Routes location={location}>
+                  {/* Public Routes */}
                   <Route path="/" element={<Home />} />
                   <Route path="/privacy" element={<PrivacyPolicy />} />
                   <Route path="/terms" element={<TermsOfService />} />
@@ -69,8 +68,10 @@ function App() {
                   <Route path="/shop" element={<FeaturedMerch />} />
                   <Route path="*" element={<NotFound />} />
 
+                  {/* Admin Login */}
                   <Route path="/protected" element={<AdminLogin />} />
 
+                  {/* Protected Dashboard */}
                   <Route
                     path="/dashboard"
                     element={

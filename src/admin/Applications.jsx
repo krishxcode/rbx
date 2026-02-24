@@ -50,11 +50,47 @@ export const Applications = () => {
   /* ---------- ACCEPT ---------- */
   const acceptApp = async (app) => {
     if (!app.email) return toast.error("User email missing");
+
     try {
+      /* 🔥 UPDATE STATUS */
       await updateDoc(doc(db, "applications", app.id), {
         status: "Accepted",
       });
 
+      /* 🔥 WHATSAPP LINK */
+      const whatsappLink =
+        "https://chat.whatsapp.com/KyukXegyu5uBburfJ4z9vS?mode=gi_t";
+
+      /* 🔥 APPROVED EMAIL MESSAGE (HTML) */
+     const approvedMessage = `
+<p>Hello <b>${app.name || app.ign || "Player"}</b>,</p>
+
+<p>🎉 Congratulations! Your RBX Esports application has been <b>ACCEPTED</b>.</p>
+
+<p><b>Phone:</b> ${app.number || app.phone || "N/A"}</p>
+
+<p>Click below to join the official RBX Esports WhatsApp Group:</p>
+
+<p>
+<a href="${whatsappLink}"
+style="
+display:inline-block;
+background:#25D366;
+color:white;
+padding:10px 18px;
+border-radius:8px;
+text-decoration:none;
+font-weight:bold;
+">
+🔥 Join RBX WhatsApp Group
+</a>
+</p>
+
+<p>Welcome to the team 🔥</p>
+<p>- RBX ESPORTS</p>
+`;
+
+      /* 🔥 SEND EMAIL */
       await emailjs.send(
         "service_6d986qp",
         "template_cy31nff",
@@ -62,10 +98,9 @@ export const Applications = () => {
           subject: "🎉 Application Accepted - RBX ESPORTS",
           name: app.name || app.ign || "Player",
           email: app.email || "",
-          type: "APPLICATION STATUS",
-          message:
-            "Congratulations! Your application has been accepted. Our team will contact you soon.",
-          to_email: app.email, // IMPORTANT
+          role: "APPLICATION STATUS",
+          message: approvedMessage,
+          to_email: app.email,
         },
         "_EW8XXtVjIQ7ea6P5"
       );
@@ -77,15 +112,30 @@ export const Applications = () => {
       toast.error("Email sending failed");
     }
   };
-
   /* ---------- REJECT ---------- */
   const rejectApp = async (app) => {
     if (!app.email) return toast.error("User email missing");
+
     try {
+      /* 🔥 UPDATE STATUS */
       await updateDoc(doc(db, "applications", app.id), {
         status: "Rejected",
       });
 
+      /* 🔥 REJECT EMAIL MESSAGE (NO WHATSAPP LINK) */
+      const rejectedMessage = `
+<p>Hello <b>${app.name || app.ign || "Player"}</b>,</p>
+
+<p>Your RBX Esports application has been <b>REJECTED</b>.</p>
+
+<p><b>Phone:</b> ${app.number || app.phone || "N/A"}</p>
+
+<p>Thank you for applying to RBX Esports.</p>
+
+<p>- RBX ESPORTS</p>
+`;
+
+      /* 🔥 SEND EMAIL */
       await emailjs.send(
         "service_6d986qp",
         "template_cy31nff",
@@ -93,10 +143,9 @@ export const Applications = () => {
           subject: "❌ Application Update - RBX ESPORTS",
           name: app.name || app.ign || "Player",
           email: app.email || "",
-          type: "APPLICATION STATUS",
-          message:
-            "Thank you for applying to RBX Esports. Currently we are not moving forward with your application.",
-          to_email: app.email, // IMPORTANT
+          role: "APPLICATION STATUS",
+          message: rejectedMessage,
+          to_email: app.email,
         },
         "_EW8XXtVjIQ7ea6P5"
       );
@@ -108,7 +157,6 @@ export const Applications = () => {
       toast.error("Email sending failed");
     }
   };
-
   /* ---------- DELETE ---------- */
   const deleteApp = async (id) => {
     if (!window.confirm("Delete application?")) return;
@@ -254,6 +302,7 @@ export const Applications = () => {
               <Detail label="Name" value={selectedApp.name} />
               <Detail label="UID" value={selectedApp.uid} />
               <Detail label="Email" value={selectedApp.email} />
+              <Detail label="Phone" value={selectedApp.number || selectedApp.phone} />
               <Detail label="Role" value={selectedApp.role} />
               <Detail label="Category" value={selectedApp.category} />
 

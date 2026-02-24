@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import emailjs from "emailjs-com";
 import toast from "react-hot-toast";
-
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase";
+const joinRef = collection(db, "join_requests");
 export const JoinSection = () => {
   const [formData, setFormData] = useState({
     ign: "",
     uid: "",
     email: "",
+    number: "",
     game: "",
     experience: "",
   });
@@ -15,49 +18,59 @@ export const JoinSection = () => {
 
   /* ---------- SUBMIT ---------- */
   const handleSubmit = async () => {
-    if (!formData.ign) return toast.error("Enter IGN");
-    if (!formData.email) return toast.error("Enter Email");
+    if (!formData.ign.trim()) return toast.error("Enter IGN");
+    if (!formData.email.trim()) return toast.error("Enter Email");
+    if (!formData.number.trim()) return toast.error("Enter Phone Number");
+    if (formData.number.length !== 10)
+      return toast.error("Phone must be 10 digits");
     if (!formData.game) return toast.error("Select Game");
 
-    try {
-      setSending(true);
-      toast.loading("Sending request...");
+    const toastId = toast.loading("Sending request...");
 
+    try {
+      console.log("🔥 TRYING TO SAVE:", formData);
+
+      /* 🔥 SAVE TO FIREBASE */
+      const docRef = await addDoc(joinRef, {
+        ...formData,
+        status: "Pending",
+        createdAt: serverTimestamp(),
+      });
+
+      console.log("✅ FIREBASE SAVE SUCCESS ID:", docRef.id);
+
+      /* 🔥 EMAIL SEND */
       await emailjs.send(
         "service_6d986qp",
-        "template_cy31nff", // same template use kar sakte ho
+        "template_cy31nff",
         {
           subject: "🔥 New Join Request - RBX ESPORTS",
           name: formData.ign,
           email: formData.email,
-          type: "JOIN REQUEST",
-          message: `
-IGN: ${formData.ign}
-UID: ${formData.uid}
-Game: ${formData.game}
+          role: "JOIN REQUEST",
 
-Experience:
-${formData.experience}
-          `,
-          to_email: "kishanpanditweb@gmail.com", // ADMIN MAIL
+          message: `
+<p><b>New Join Request Received</b></p>
+
+<p><b>IGN:</b> ${formData.ign}</p>
+<p><b>UID:</b> ${formData.uid}</p>
+<p><b>Email:</b> ${formData.email}</p>
+<p><b>Phone:</b> ${formData.number}</p>
+<p><b>Game:</b> ${formData.game}</p>
+<p><b>Experience:</b> ${formData.experience}</p>
+`,
+
+          to_email: "kishanpanditweb@gmail.com",
         },
         "_EW8XXtVjIQ7ea6P5"
       );
 
-      toast.dismiss();
+      toast.dismiss(toastId);
       toast.success("Join request sent!");
-
-      setFormData({
-        ign: "",
-        uid: "",
-        email: "",
-        game: "",
-        experience: "",
-      });
     } catch (err) {
-      console.error(err);
-      toast.dismiss();
-      toast.error("Failed to send request");
+      console.error("❌ FIREBASE ERROR:", err.message);
+      toast.dismiss(toastId);
+      toast.error(err.message);
     } finally {
       setSending(false);
     }
@@ -112,7 +125,7 @@ ${formData.experience}
               </div>
             </div>
 
-            {/* EMAIL FIELD (UI SAME STYLE) */}
+            {/* EMAIL FIELD */}
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-widest text-gray-500">
                 Email Address
@@ -125,6 +138,27 @@ ${formData.experience}
                 }
                 className="w-full bg-black/50 border border-white/10 p-4 text-white focus:border-brand-red focus:outline-none transition-colors"
                 placeholder="you@email.com"
+              />
+            </div>
+
+            {/* PHONE FIELD */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-widest text-gray-500">
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                inputMode="numeric"
+                maxLength={10}
+                value={formData.number}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    number: e.target.value.replace(/\D/g, "").slice(0, 10),
+                  })
+                }
+                className="w-full bg-black/50 border border-white/10 p-4 text-white focus:border-brand-red focus:outline-none transition-colors"
+                placeholder="Phone Number"
               />
             </div>
 
