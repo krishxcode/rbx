@@ -4,6 +4,15 @@ import { ChevronDown, Target, MapPin, Shield } from "lucide-react";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 
+/* ---------- CLOUDINARY IMAGE OPTIMIZER ---------- */
+const optimizeImage = (url) => {
+  if (!url) return "";
+  return url.replace(
+    "/upload/",
+    "/upload/f_auto,q_auto,c_fill,g_face,w_900,h_900/"
+  );
+};
+
 // Mock Data Structure
 const GAME_ORDER = ["FREE FIRE", "VALORANT", "BGMI"];
 
@@ -247,10 +256,10 @@ export const TeamRoster = () => {
             <div className="flex items-center gap-6 mb-12">
               <div className="h-px bg-gradient-to-r from-transparent to-brand-red flex-1"></div>
               <div className="px-6 py-2 border border-brand-red/30 bg-brand-red/5 skew-x-[-12deg]">
-              <h3 className="text-3xl font-display font-bold text-white uppercase tracking-widest flex items-center gap-3">
-                <Shield size={24} className="text-brand-red" />
-                {currentTeam?.name || "LOADING"} ROSTER
-              </h3>
+                <h3 className="text-3xl font-display font-bold text-white uppercase tracking-widest flex items-center gap-3">
+                  <Shield size={24} className="text-brand-red" />
+                  {currentTeam?.name || "LOADING"} ROSTER
+                </h3>
               </div>
               <div className="h-px bg-gradient-to-l from-transparent to-brand-red flex-1"></div>
             </div>
@@ -282,7 +291,7 @@ const PlayerCard = ({ player, index }) => (
       {/* Character Image */}
       <div className="absolute inset-0 z-10">
         <img
-          src={player.img}
+          src={optimizeImage(player.img)}
           alt={player.name}
           className="w-full h-full object-cover filter grayscale contrast-125 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700 ease-out origin-top"
         />

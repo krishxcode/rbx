@@ -3,6 +3,14 @@ import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 import { X } from "lucide-react";
 
+const optimizeImage = (url) => {
+  if (!url) return "";
+  return url.replace(
+    "/upload/",
+    "/upload/f_auto,q_auto,c_fill,g_face,w_900,h_900/"
+  );
+};
+
 export const PlayerSpotlight = () => {
   const [player, setPlayer] = useState(null);
   const [showProfile, setShowProfile] = useState(false);
@@ -96,8 +104,9 @@ export const PlayerSpotlight = () => {
               <div className="relative z-10">
                 <img
                   src={
-                    player.img ||
-                    "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=2574&auto=format&fit=crop"
+                    player.img
+                      ? optimizeImage(player.img)
+                      : "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=2574&auto=format&fit=crop"
                   }
                   alt={player.name}
                   className="w-full h-[600px] object-cover object-top filter contrast-125 grayscale hover:grayscale-0 transition-all duration-700 clip-path-slant"
@@ -126,7 +135,7 @@ export const PlayerSpotlight = () => {
             <div className="flex flex-col md:flex-row gap-6">
               {/* IMAGE */}
               <img
-                src={player.img}
+                src={optimizeImage(player.img)}
                 alt={player.name}
                 className="w-full md:w-64 h-72 object-cover rounded-xl border border-white/20"
               />

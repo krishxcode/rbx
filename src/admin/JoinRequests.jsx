@@ -1,5 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { collection, onSnapshot, doc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  doc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import emailjs from "emailjs-com";
 import toast from "react-hot-toast";
@@ -34,6 +40,19 @@ const JoinRequests = () => {
     return () => unsub();
   }, []);
 
+  /* 🔥 DELETE REQUEST */
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this request permanently?")) return;
+
+    try {
+      await deleteDoc(doc(db, "join_requests", id));
+      toast.success("Request deleted");
+      setSelectedRequest(null);
+    } catch (err) {
+      console.error(err);
+      toast.error("Delete failed");
+    }
+  };
   /* 🔥 FILTER + SEARCH */
   const filtered = useMemo(() => {
     return requests.filter((r) => {
@@ -263,6 +282,21 @@ font-weight:bold;
               <p>
                 <b>Experience:</b> {selectedRequest.experience}
               </p>
+            </div>
+            <div className="mt-6 flex gap-3">
+              <button
+                onClick={() => handleDelete(selectedRequest.id)}
+                className="flex-1 bg-red-600 hover:bg-red-700 py-2 rounded-lg font-bold transition"
+              >
+                Delete Request
+              </button>
+
+              <button
+                onClick={() => setSelectedRequest(null)}
+                className="flex-1 bg-white/10 hover:bg-white/20 py-2 rounded-lg font-bold transition"
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
