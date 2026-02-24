@@ -186,7 +186,7 @@ export const Careers = () => {
 
                     <div className="hidden lg:flex items-center gap-2">
                       <Briefcase size={16} className="text-brand-red" />
-                      <span>{job.salary}</span>
+                      <span>₹{job.salary}</span>
                     </div>
                   </div>
 
