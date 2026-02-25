@@ -13,7 +13,11 @@ const optimizeImage = (url) => {
 };
 
 const GAME_ORDER = ["FREE FIRE", "VALORANT", "BGMI"];
-
+const getFlagEmoji = (countryCode = "") => {
+  return countryCode
+    .toUpperCase()
+    .replace(/./g, (char) => String.fromCodePoint(127397 + char.charCodeAt()));
+};
 export const TeamRoster = () => {
   const [activeTeamId, setActiveTeamId] = useState("ff-main");
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -245,9 +249,12 @@ const PlayerCard = React.memo(({ player, index }) => (
         <div className="transform transition-transform duration-300 group-hover:-translate-y-4">
           <div className="flex items-center gap-2 mb-2">
             <MapPin size={12} className="text-brand-red" />
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">
-              {player.country}
-            </span>
+
+            <img
+              src="/india.png"
+              alt="India Flag"
+            className="w-6 h-4 object-cover rounded-sm"
+            />
           </div>
 
           <h3 className="text-5xl font-display font-bold text-white mb-1 leading-none italic uppercase">

@@ -149,7 +149,7 @@ const TournamentHub = () => {
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="flex flex-wrap gap-2"
+            className="flex flex-wrap justify-center md:justify-end gap-2 w-full md:w-auto mt-6 md:mt-0"
           >
             {filters.map((filter) => (
               <button
