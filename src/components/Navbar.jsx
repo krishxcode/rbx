@@ -155,7 +155,7 @@ const Navbar = () => {
                 {link.name}
 
                 {link.name === "Career" && (
-                  <span className="absolute -top-2 -right-10 px-2 py-[2px] text-[9px] font-bold tracking-wider bg-brand-red text-white rounded animate-pulse whitespace-nowrap">
+                  <span className="absolute -top-3 -right-12 px-2 py-[2px] text-[9px] font-bold tracking-wider bg-brand-red text-white rounded animate-pulse whitespace-nowrap">
                     HIRING
                   </span>
                 )}
