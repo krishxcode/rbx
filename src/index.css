@@ -12,3 +12,23 @@
   background: #ff0033;
   color: white;
 }
+/* ===== INSANE GAMING LOADING ===== */
+
+@keyframes gamingShimmer {
+  0% {
+    transform: translateX(-130%);
+  }
+  100% {
+    transform: translateX(130%);
+  }
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}

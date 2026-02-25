@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Target, MapPin, Shield } from "lucide-react";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
-
 /* ---------- CLOUDINARY IMAGE OPTIMIZER ---------- */
 const optimizeImage = (url) => {
   if (!url) return "";
@@ -20,7 +19,7 @@ export const TeamRoster = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [rosterData, setRosterData] = useState({});
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
@@ -48,7 +47,7 @@ export const TeamRoster = () => {
       });
 
       setRosterData(grouped);
-
+      setLoading(false);
       if (!activeTeamId || !grouped) return;
 
       if (grouped["FREE FIRE"]?.[0]) {
@@ -206,9 +205,11 @@ export const TeamRoster = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {currentTeam?.players?.map((player, idx) => (
-            <PlayerCard key={player.id || idx} player={player} index={idx} />
-          ))}
+          {loading
+            ? Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)
+            : currentTeam?.players?.map((player, idx) => (
+                <PlayerCard key={idx} player={player} index={idx} />
+              ))}
         </div>
       </div>
     </section>
@@ -280,3 +281,49 @@ const PlayerCard = React.memo(({ player, index }) => (
     </div>
   </motion.div>
 ));
+
+const SkeletonCard = () => (
+  <div className="group relative h-[500px] overflow-hidden bg-[#151515] border border-white/10 clip-path-slant">
+    {/* ===== FAKE IMAGE LAYER ===== */}
+    <div className="absolute inset-0 bg-gradient-to-b from-[#222] via-[#1a1a1a] to-[#111]" />
+
+    {/* ===== DEPTH GLOW ===== */}
+    <div
+      className="absolute inset-0 bg-brand-red/10"
+      style={{ animation: "pulseGlow 2s ease-in-out infinite" }}
+    />
+
+    {/* ===== MOVING LIGHT SWEEP ===== */}
+    <div
+      className="absolute inset-0"
+      style={{
+        background:
+          "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)",
+        animation: "gamingShimmer 1.4s linear infinite",
+      }}
+    />
+
+    {/* ===== FAKE IMAGE SHAPE ===== */}
+    <div className="absolute inset-0 opacity-40">
+      <div className="w-full h-full bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+    </div>
+
+    {/* ===== FAKE CONTENT ===== */}
+    <div className="absolute inset-0 p-6 flex flex-col justify-end z-10">
+      {/* fake location */}
+      <div className="h-3 w-24 bg-white/10 mb-3 rounded"></div>
+
+      {/* fake name */}
+      <div className="h-10 w-44 bg-white/10 mb-4 rounded"></div>
+
+      {/* fake underline */}
+      <div className="h-2 w-20 bg-brand-red/50 rounded mb-4"></div>
+
+      {/* fake stats */}
+      <div className="grid grid-cols-2 gap-2">
+        <div className="h-14 bg-black/40 border-l-2 border-brand-red/40 rounded"></div>
+        <div className="h-14 bg-black/40 border-l-2 border-white/30 rounded"></div>
+      </div>
+    </div>
+  </div>
+);
