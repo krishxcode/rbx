@@ -3,10 +3,20 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, PlayCircle, Crosshair } from "lucide-react";
 
 export const Hero = () => {
+  const [heroReady, setHeroReady] = React.useState(false);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setHeroReady(true);
+    }, 180); // Riot-style delay
+
+    return () => clearTimeout(timer);
+  }, []);
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
+    layoutEffect: false, // ⭐ prevents first load jump
   });
 
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
@@ -16,11 +26,17 @@ export const Hero = () => {
   return (
     <section
       ref={ref}
-      className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-brand-dark perspective-1000"
+      className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-brand-dark perspective-1000 transform-gpu"
     >
       {/* Background with Parallax */}
       <motion.div style={{ y: backgroundY }} className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2670&auto=format&fit=crop')] bg-cover bg-center scale-110"></div>
+        <div
+          className="absolute inset-0 bg-cover bg-center scale-110 will-change-transform"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2670&auto=format&fit=crop')",
+          }}
+        ></div>
         {/* Dynamic Gradients */}
         <div className="absolute inset-0 bg-gradient-to-b from-brand-dark/30 via-brand-dark/60 to-brand-dark"></div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#050505_90%)]"></div>
@@ -36,26 +52,33 @@ export const Hero = () => {
             opacity: [0.3, 0.6, 0.3],
           }}
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/4 left-10 w-64 h-64 bg-brand-red/10 rounded-full blur-[80px]"
+          className="absolute top-1/4 left-10 w-64 h-64 bg-brand-red/10 rounded-full blur-[60px]"
         />
         <motion.div
-          animate={{
-            y: [0, 30, 0],
-            opacity: [0.2, 0.5, 0.2],
-          }}
+          animate={
+            heroReady
+              ? {
+                  y: [0, -20, 0],
+                  opacity: [0.3, 0.6, 0.3],
+                }
+              : {}
+          }
           transition={{
             duration: 7,
             repeat: Infinity,
             ease: "easeInOut",
             delay: 1,
           }}
-          className="absolute bottom-1/4 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px]"
+          className="absolute bottom-1/4 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-[70px]"
         />
       </div>
 
       {/* Main Content */}
       <motion.div
-        style={{ y: textY, opacity }}
+        style={heroReady ? { y: textY, opacity } : { opacity: 1 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: heroReady ? 1 : 0 }}
+        transition={{ duration: 0.5 }}
         className="container mx-auto px-6 relative z-10 text-center flex flex-col items-center"
       >
         {/* Season Badge */}
@@ -75,7 +98,7 @@ export const Hero = () => {
         <div className="relative mb-6">
           <motion.h1
             initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={heroReady ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="text-7xl md:text-[10rem] font-display font-bold leading-[0.85] tracking-tighter text-white"
           >
