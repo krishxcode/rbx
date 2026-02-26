@@ -9,13 +9,23 @@ const leaders = [
     image: "/images/nishant.jpg",
     bio: "Visionary leader with a decade of competitive experience. Founded RBX to set a new standard in esports excellence.",
     type: "FOUNDER",
+    social: {
+      twitter: "https://x.com/BadmashThakur1",
+      linkedin: " https://www.linkedin.com/in/nishant-singh-37b9992b0?",
+      mail: "mailto:nishant.singh@rbxesports.com",
+    },
   },
   {
     name: "KISHAN PANDIT",
     role: "CO-FOUNDER & COO",
     image: "/images/kishan.jpg",
-    bio: "The strategic mind behind our global operations. Formerly managed top-tier teams in Europe and NA.",
+    bio: "The strategic mind behind our global operations. Formerly managed top-tier teams in INDIA.",
     type: "FOUNDER",
+    social: {
+      twitter: "https://x.com/krish_x_code?t=czCWmVQXNx_YMsxqeheGaQ&s=35",
+      linkedin: "https://www.linkedin.com/in/kishanpanditdev/",
+      mail: "mailto:kishanpanditweb@gmail.com",
+    },
   },
 ];
 
@@ -24,59 +34,60 @@ const staff = [
     name: "MUSKAN VERMA",
     role: "HIRING MANAGER",
     image: "/images/hr.jpg",
-    bio: "Orchestrating the daily operations of our championship rosters.",
+    bio: "Leading talent acquisition and recruitment strategy for RBX Esports. Focused on identifying skilled players, staff, and creators to build a strong and competitive organization.",
     type: "STAFF",
+    social: {
+      twitter: "https://twitter.com/",
+      linkedin: "https://linkedin.com/",
+      mail: "mailto:test@gmail.com",
+    },
   },
   {
     name: "VIVEK SINGH",
     role: "SLOT MANAGER",
     image:
       "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=2574&auto=format&fit=crop",
-    bio: "Tactical mastermind. Led three different rosters to major titles.",
+    bio: "Managing tournament slots, scrims, and competitive scheduling to ensure smooth participation across events while maximizing team exposure and performance opportunities.",
     type: "STAFF",
+    social: {
+      twitter: "https://twitter.com/",
+      linkedin: "https://linkedin.com/",
+      mail: "mailto:test@gmail.com",
+    },
   },
-  // {
-  //   name: "ELENA RODRIGUEZ",
-  //   role: "MARKETING LEAD",
-  //   image:
-  //     "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=2661&auto=format&fit=crop",
-  //   bio: "Building the RBX brand and connecting with our global fanbase.",
-  //   type: "STAFF",
-  // },
-  // {
-  //   name: "JESSICA LEE",
-  //   role: "SOCIAL MEDIA",
-  //   image:
-  //     "https://images.unsplash.com/photo-1598550874175-4d7112ee7f43?q=80&w=2670&auto=format&fit=crop",
-  //   bio: "The voice of the organization. Creator of our viral content.",
-  //   type: "STAFF",
-  // },
-  // {
-  //   name: "MARCUS JOHNSON",
-  //   role: "CREATIVE DIRECTOR",
-  //   image:
-  //     "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=2574&auto=format&fit=crop",
-  //   bio: "Defining the visual identity of the next generation of esports.",
-  //   type: "STAFF",
-  // },
-  // {
-  //   name: "EMILY CHEN",
-  //   role: "HR & TALENT",
-  //   image:
-  //     "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=2670&auto=format&fit=crop",
-  //   bio: "Fostering a culture of excellence and well-being.",
-  //   type: "STAFF",
-  // },
+  {
+    name: "ABHIJIT",
+    role: "SLOT MANAGER",
+    image:
+      "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=2574&auto=format&fit=crop",
+    bio: "Responsible for securing and managing tournament slots for RBX Esports. Coordinates registrations, slot confirmations, and event participation to ensure smooth entry into competitive tournaments.",
+    type: "STAFF",
+    social: {
+      twitter: "https://twitter.com/",
+      linkedin: "https://linkedin.com/",
+      mail: "mailto:test@gmail.com",
+    },
+  },
 ];
 
-const SocialIcon = ({ Icon }) => (
-  <a href="#" className="text-gray-500 hover:text-white transition-colors">
+const SocialIcon = ({ Icon, link }) => (
+  <a
+    href={link || "#"}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-gray-500 hover:text-white transition-colors"
+  >
     <Icon size={20} />
   </a>
 );
 
-const SocialIconSmall = ({ Icon }) => (
-  <a href="#" className="text-gray-600 hover:text-brand-red transition-colors">
+const SocialIconSmall = ({ Icon, link }) => (
+  <a
+    href={link || "#"}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-gray-600 hover:text-brand-red transition-colors"
+  >
     <Icon size={16} />
   </a>
 );
@@ -100,6 +111,7 @@ export const Management = () => {
           >
             <Shield className="text-brand-red" size={32} />
           </motion.div>
+
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -108,6 +120,7 @@ export const Management = () => {
           >
             RBX <span className="text-brand-red">LEADERSHIP</span>
           </motion.h1>
+
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -144,17 +157,29 @@ export const Management = () => {
                     </span>
                   </div>
                 </div>
+
                 <div className="p-8 pt-6 relative bg-gradient-to-b from-transparent to-black/50 flex-1 flex flex-col">
                   <h3 className="text-3xl font-display font-bold text-white mb-3 group-hover:text-brand-red transition-colors">
                     {leader.name}
                   </h3>
+
                   <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
                     {leader.bio}
                   </p>
+
                   <div className="flex gap-4 border-t border-white/10 pt-6">
-                    <SocialIcon Icon={Twitter} />
-                    <SocialIcon Icon={Linkedin} />
-                    <SocialIcon Icon={Mail} />
+                    {leader.social?.twitter && (
+                      <SocialIcon Icon={Twitter} link={leader.social.twitter} />
+                    )}
+                    {leader.social?.linkedin && (
+                      <SocialIcon
+                        Icon={Linkedin}
+                        link={leader.social.linkedin}
+                      />
+                    )}
+                    {leader.social?.mail && (
+                      <SocialIcon Icon={Mail} link={leader.social.mail} />
+                    )}
                   </div>
                 </div>
               </div>
@@ -193,11 +218,11 @@ export const Management = () => {
                 <h3 className="text-xl font-display font-bold text-white mb-1 group-hover:text-brand-red transition-colors">
                   {member.name}
                 </h3>
+
                 <span className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">
                   {member.role}
                 </span>
 
-                {/* Active Badge */}
                 <div className="mb-6 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
                   <span className="text-[10px] font-bold text-green-500 uppercase tracking-wide">
@@ -210,13 +235,24 @@ export const Management = () => {
                 </p>
 
                 <div className="flex justify-center gap-4 w-full pt-4 border-t border-white/5">
-                  <SocialIconSmall Icon={Twitter} />
-                  <SocialIconSmall Icon={Linkedin} />
-                  <SocialIconSmall Icon={Mail} />
+                  {member.social?.twitter && (
+                    <SocialIconSmall
+                      Icon={Twitter}
+                      link={member.social.twitter}
+                    />
+                  )}
+                  {member.social?.linkedin && (
+                    <SocialIconSmall
+                      Icon={Linkedin}
+                      link={member.social.linkedin}
+                    />
+                  )}
+                  {member.social?.mail && (
+                    <SocialIconSmall Icon={Mail} link={member.social.mail} />
+                  )}
                 </div>
               </div>
 
-              {/* Hover Overlay */}
               <div className="absolute inset-0 bg-gradient-to-b from-transparent to-brand-red/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
             </motion.div>
           ))}

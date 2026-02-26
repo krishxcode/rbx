@@ -1,27 +1,47 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, PlayCircle, Crosshair } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const Hero = () => {
+  const navigate = useNavigate();
   const [heroReady, setHeroReady] = React.useState(false);
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
       setHeroReady(true);
-    }, 180); // Riot-style delay
+    }, 180);
 
     return () => clearTimeout(timer);
   }, []);
+
   const ref = useRef(null);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
-    layoutEffect: false, // ⭐ prevents first load jump
+    layoutEffect: false,
   });
 
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+  // 🔥 JOIN BUTTON FUNCTION (scroll first, else navigate)
+  const handleJoinClick = () => {
+    const joinSection = document.getElementById("join-section");
+
+    if (joinSection) {
+      joinSection.scrollIntoView({ behavior: "smooth" });
+    } else {
+      navigate("/join");
+    }
+  };
+
+  // 🔥 SHOWREEL ROUTE
+  const handleShowreelClick = () => {
+    navigate("/media");
+  };
 
   return (
     <section
@@ -37,31 +57,23 @@ export const Hero = () => {
               "url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2670&auto=format&fit=crop')",
           }}
         ></div>
-        {/* Dynamic Gradients */}
+
         <div className="absolute inset-0 bg-gradient-to-b from-brand-dark/30 via-brand-dark/60 to-brand-dark"></div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#050505_90%)]"></div>
-        {/* CRT Scanline Effect */}
+
         <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%] pointer-events-none"></div>
       </motion.div>
 
-      {/* Floating Geometric Elements */}
+      {/* Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          animate={{
-            y: [0, -20, 0],
-            opacity: [0.3, 0.6, 0.3],
-          }}
+          animate={{ y: [0, -20, 0], opacity: [0.3, 0.6, 0.3] }}
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-1/4 left-10 w-64 h-64 bg-brand-red/10 rounded-full blur-[60px]"
         />
         <motion.div
           animate={
-            heroReady
-              ? {
-                  y: [0, -20, 0],
-                  opacity: [0.3, 0.6, 0.3],
-                }
-              : {}
+            heroReady ? { y: [0, -20, 0], opacity: [0.3, 0.6, 0.3] } : {}
           }
           transition={{
             duration: 7,
@@ -81,7 +93,7 @@ export const Hero = () => {
         transition={{ duration: 0.5 }}
         className="container mx-auto px-6 relative z-10 text-center flex flex-col items-center"
       >
-        {/* Season Badge */}
+        {/* Badge */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -94,44 +106,25 @@ export const Hero = () => {
           </span>
         </motion.div>
 
-        {/* Dynamic Title */}
+        {/* Title */}
         <div className="relative mb-6">
           <motion.h1
             initial={{ opacity: 0, y: 50 }}
             animate={heroReady ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, delay: 0.3 }}
             className="text-7xl md:text-[10rem] font-display font-bold leading-[0.85] tracking-tighter text-white"
           >
             REDEFINE
           </motion.h1>
+
           <motion.h1
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.8,
-              delay: 0.45,
-              ease: [0.22, 1, 0.36, 1],
-            }}
+            transition={{ duration: 0.8, delay: 0.45 }}
             className="text-7xl md:text-[10rem] font-display font-bold leading-[0.85] tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-brand-red to-red-900"
           >
             VICTORY
           </motion.h1>
-
-          {/* Decorative Outline Text Behind */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 opacity-10 pointer-events-none select-none">
-            <h1
-              className="text-7xl md:text-[10rem] font-display font-bold leading-[0.85] tracking-tighter text-transparent"
-              style={{ WebkitTextStroke: "2px white" }}
-            >
-              REDEFINE
-            </h1>
-            <h1
-              className="text-7xl md:text-[10rem] font-display font-bold leading-[0.85] tracking-tighter text-transparent"
-              style={{ WebkitTextStroke: "2px white" }}
-            >
-              VICTORY
-            </h1>
-          </div>
         </div>
 
         <motion.p
@@ -140,7 +133,7 @@ export const Hero = () => {
           transition={{ duration: 1, delay: 0.6 }}
           className="max-w-2xl mx-auto text-gray-400 text-lg md:text-xl mb-12 font-light tracking-wide leading-relaxed"
         >
-          The arena is unforgiving. Only the relentless survive.{" "}
+          The arena is unforgiving. Only the relentless survive.
           <br className="hidden md:block" />
           Welcome to <strong className="text-white">RBX ESPORTS</strong>, where
           we don't just play the game—we rewrite the rules.
@@ -153,7 +146,10 @@ export const Hero = () => {
           transition={{ duration: 0.5, delay: 0.8 }}
           className="flex flex-col md:flex-row items-center gap-6"
         >
-          <button className="group relative px-10 py-5 bg-brand-red text-white font-display font-bold text-xl tracking-widest uppercase overflow-hidden clip-path-button">
+          <button
+            onClick={handleJoinClick}
+            className="group relative px-10 py-5 bg-brand-red text-white font-display font-bold text-xl tracking-widest uppercase overflow-hidden clip-path-button"
+          >
             <span className="relative z-10 flex items-center gap-3 group-hover:gap-4 transition-all">
               Join The Roster <ArrowRight size={20} />
             </span>
@@ -162,14 +158,17 @@ export const Hero = () => {
             <span className="absolute bottom-0 left-0 w-full h-1 bg-white/20"></span>
           </button>
 
-          <button className="group flex items-center gap-3 px-10 py-5 border border-white/10 hover:border-white/30 bg-white/5 backdrop-blur-md text-white font-display font-bold text-xl tracking-widest uppercase clip-path-button transition-all hover:bg-white/10">
+          <button
+            onClick={handleShowreelClick}
+            className="group flex items-center gap-3 px-10 py-5 border border-white/10 hover:border-white/30 bg-white/5 backdrop-blur-md text-white font-display font-bold text-xl tracking-widest uppercase clip-path-button transition-all hover:bg-white/10"
+          >
             <PlayCircle className="text-brand-red group-hover:scale-110 transition-transform" />
             Watch Showreel
           </button>
         </motion.div>
       </motion.div>
 
-      {/* Bottom Ticker / Decoration */}
+      {/* Bottom Ticker */}
       <div className="absolute bottom-0 left-0 w-full border-t border-white/5 bg-black/50 backdrop-blur-sm py-4 z-20 overflow-hidden">
         <div className="flex whitespace-nowrap animate-marquee">
           {[...Array(10)].map((_, i) => (
@@ -186,11 +185,11 @@ export const Hero = () => {
 
       <style>{`
         @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
         }
         .animate-marquee {
-            animation: marquee 30s linear infinite;
+          animation: marquee 30s linear infinite;
         }
       `}</style>
     </section>

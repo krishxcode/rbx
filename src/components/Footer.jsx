@@ -53,7 +53,7 @@ const Footer = () => {
 
             {/* Social Links */}
             <div className="flex flex-wrap gap-3">
-              <SocialLink Icon={Twitter} url="https://twitter.com/" />
+              <SocialLink Icon={Twitter} url="https://x.com/Rbx_esports" />
               <SocialLink
                 Icon={Instagram}
                 url="https://www.instagram.com/rbx.esports_official/"
@@ -84,7 +84,11 @@ const Footer = () => {
                 text="News & Media"
                 action={() => navigate("/media")}
               />
-              <FooterLink text="Shop Merch" badge="NEW" action={() => navigate("/shop")} />
+              <FooterLink
+                text="Shop Merch"
+                badge="NEW"
+                action={() => navigate("/shop")}
+              />
             </ul>
           </div>
 
@@ -104,7 +108,7 @@ const Footer = () => {
                 action={() => navigate("/career")}
                 badge="HIRING"
               />
-              <FooterLink text="Contact" action={() => navigate("/")} />
+              <FooterLink text="Contact" action={() => navigate("/join")} />
             </ul>
           </div>
 
